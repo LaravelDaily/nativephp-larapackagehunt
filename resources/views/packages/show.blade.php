@@ -1,15 +1,40 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AnySearch — {{ config('app.name', 'Laravel Package Hunt') }}</title>
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="nativephp-safe-area min-h-screen bg-white font-sans text-slate-900 antialiased">
+@php
+    $screenshots = [
+        ['label' => 'AnySearch screenshot 1', 'background' => 'from-slate-50 to-slate-200 text-slate-400'],
+        ['label' => 'AnySearch screenshot 2', 'background' => 'from-slate-100 to-slate-300 text-slate-500'],
+    ];
+@endphp
+
+@extends('layouts.app')
+
+@section('title', 'AnySearch — '.config('app.name', 'Laravel Package Hunt'))
+
+@section('content')
+    <div
+        x-data="{
+            open: false,
+            active: 0,
+            count: {{ count($screenshots) }},
+            show(index) {
+                this.open = true;
+                this.active = index;
+                this.$nextTick(() => this.goTo(index, false));
+            },
+            close() {
+                this.open = false;
+            },
+            goTo(index, smooth = true) {
+                this.active = (index + this.count) % this.count;
+                this.$refs.gallery.scrollTo({
+                    left: this.$refs.gallery.clientWidth * this.active,
+                    behavior: smooth ? 'smooth' : 'auto',
+                });
+            },
+        }"
+        @keydown.escape.window="open && close()"
+        @keydown.left.window="open && goTo(active - 1)"
+        @keydown.right.window="open && goTo(active + 1)"
+    >
         <main class="mx-auto min-h-screen w-full max-w-md overflow-hidden bg-white pb-28">
             <header class="px-7 pt-7 pb-5">
                 <a
@@ -47,31 +72,23 @@
                     </a>
                 </div>
 
-                <div class="-mx-7 mt-7 flex gap-4 overflow-x-auto pb-2">
-                    <div
-                        role="img"
-                        aria-label="AnySearch screenshot placeholder"
-                        class="ml-7 grid aspect-video w-[85%] shrink-0 place-items-center rounded-xl bg-gradient-to-br from-slate-50 to-slate-200 text-slate-400 outline outline-1 -outline-offset-1 outline-black/10"
-                    >
-                        <div class="flex flex-col items-center gap-2">
-                            <svg class="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 16 5-5 4 4 3-3 6 6M5 20h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Zm10-12h.01" />
-                            </svg>
-                            <span class="text-sm font-medium">Screenshot placeholder</span>
-                        </div>
-                    </div>
-                    <div
-                        role="img"
-                        aria-label="AnySearch screenshot placeholder"
-                        class="mr-7 grid aspect-video w-[85%] shrink-0 place-items-center rounded-xl bg-gradient-to-br from-slate-100 to-slate-300 text-slate-500 outline outline-1 -outline-offset-1 outline-black/10"
-                    >
-                        <div class="flex flex-col items-center gap-2">
-                            <svg class="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m3 16 5-5 4 4 3-3 6 6M5 20h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Zm10-12h.01" />
-                            </svg>
-                            <span class="text-sm font-medium">Screenshot placeholder</span>
-                        </div>
-                    </div>
+                <div class="-mx-7 mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
+                    @foreach ($screenshots as $index => $screenshot)
+                        <button
+                            type="button"
+                            aria-label="Open {{ $screenshot['label'] }}"
+                            aria-haspopup="dialog"
+                            @click="show({{ $index }})"
+                            class="grid aspect-video w-[85%] shrink-0 snap-center cursor-zoom-in place-items-center rounded-xl bg-gradient-to-br {{ $screenshot['background'] }} outline outline-1 -outline-offset-1 outline-black/10 transition-[scale,box-shadow] duration-150 ease-out first:ml-7 last:mr-7 hover:shadow-lg active:scale-[0.96]"
+                        >
+                            <span class="flex flex-col items-center gap-2">
+                                <svg class="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m3 16 5-5 4 4 3-3 6 6M5 20h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Zm10-12h.01" />
+                                </svg>
+                                <span class="text-sm font-medium">Screenshot placeholder</span>
+                            </span>
+                        </button>
+                    @endforeach
                 </div>
 
                 <p class="mt-7 text-pretty text-lg leading-relaxed text-slate-700">
@@ -93,22 +110,78 @@
                     </div>
                 </dl>
             </article>
-        </main>
+    </main>
 
-        <native:bottom-nav label-visibility="labeled">
-            <native:bottom-nav-item
-                id="home"
-                icon="home"
-                label="Home"
-                :url="route('home')"
-                :active="true"
-            />
-            <native:bottom-nav-item
-                id="discover"
-                icon="search"
-                label="Discover"
-                url="#"
-            />
-        </native:bottom-nav>
-    </body>
-</html>
+    <div
+            x-show="open"
+            x-transition:enter="transition-opacity duration-200 ease-out"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition-opacity duration-150 ease-in"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            x-trap.inert.noscroll="open"
+            @click.self="close()"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Package screenshots"
+            class="fixed inset-0 z-[100] bg-slate-950/40 backdrop-blur-md"
+            style="display: none;"
+        >
+            <button
+                x-ref="close"
+                type="button"
+                @click="close()"
+                aria-label="Close screenshots"
+                class="absolute top-[max(1.5rem,env(safe-area-inset-top))] left-6 z-10 grid size-16 place-items-center rounded-full bg-white/90 text-slate-800 shadow-xl backdrop-blur transition-[scale,background-color] duration-150 ease-out hover:bg-white active:scale-[0.96]"
+            >
+                <svg class="size-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path stroke-linecap="round" d="M6 6l12 12M18 6 6 18" />
+                </svg>
+            </button>
+
+            <div
+                x-ref="gallery"
+                @click.self="close()"
+                @scroll.debounce.50ms="active = Math.min(count - 1, Math.max(0, Math.round($el.scrollLeft / $el.clientWidth)))"
+                class="flex h-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+                @foreach ($screenshots as $screenshot)
+                    <div class="flex min-w-full snap-center items-center justify-center px-7 py-32">
+                        <div
+                            role="img"
+                            aria-label="{{ $screenshot['label'] }}"
+                            class="grid aspect-video w-full max-w-4xl place-items-center rounded-xl bg-gradient-to-br {{ $screenshot['background'] }} shadow-2xl outline outline-1 -outline-offset-1 outline-white/10"
+                        >
+                            <div class="flex flex-col items-center gap-3">
+                                <svg class="size-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m3 16 5-5 4 4 3-3 6 6M5 20h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Zm10-12h.01" />
+                                </svg>
+                                <span class="font-medium">Screenshot placeholder</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="pointer-events-none absolute inset-x-0 bottom-[max(2rem,env(safe-area-inset-bottom))] flex justify-center gap-3" aria-label="Screenshot pagination">
+                @foreach ($screenshots as $index => $screenshot)
+                    <button
+                        type="button"
+                        @click="goTo({{ $index }})"
+                        aria-label="Show {{ $screenshot['label'] }}"
+                        :aria-current="active === {{ $index }} ? 'true' : 'false'"
+                        class="pointer-events-auto grid size-11 place-items-center"
+                    >
+                        <span
+                            class="size-3 rounded-full shadow-sm transition-[scale,background-color] duration-150 ease-out"
+                            :class="active === {{ $index }} ? 'scale-125 bg-red-500' : 'bg-white/90'"
+                        ></span>
+                    </button>
+                @endforeach
+            </div>
+
+            <span class="sr-only" aria-live="polite" x-text="`Screenshot ${active + 1} of ${count}`"></span>
+        </div>
+    </div>
+@endsection
