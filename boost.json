@@ -8,11 +8,17 @@
     "guidelines": true,
     "mcp": true,
     "nightwatch": false,
+    "packages": [
+        "nativephp/mobile",
+        "livewire/blaze"
+    ],
     "sail": false,
     "skills": [
         "laravel-best-practices",
         "livewire-development",
         "pest-testing",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "blaze-optimize",
+        "nativephp-mobile"
     ]
 }
