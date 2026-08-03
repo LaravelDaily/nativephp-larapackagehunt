@@ -1,7 +1,15 @@
 <?php
 
-use App\Http\Controllers\HomeController;
+use App\NativeComponents\Home;
+use App\NativeComponents\PackageDetails;
+use App\NativeLayouts\DetailLayout;
+use App\NativeLayouts\HomeLayout;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
-Route::view('/packages/anysearch', 'packages.show')->name('packages.show');
+Route::native('/', Home::class)
+    ->layout(HomeLayout::class)
+    ->name('home');
+
+Route::native('/packages/anysearch', PackageDetails::class)
+    ->layout(DetailLayout::class)
+    ->name('packages.show');

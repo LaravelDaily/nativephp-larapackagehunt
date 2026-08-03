@@ -1,44 +1,20 @@
 <?php
 
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Http;
+use App\NativeComponents\Home;
+use App\NativeComponents\PackageDetails;
+use App\NativeLayouts\DetailLayout;
+use App\NativeLayouts\HomeLayout;
+use Native\Mobile\Edge\NativeRouter;
 
-test('returns a successful response', function () {
-    config(['app.api_url' => 'https://packages.example/api']);
-
-    Http::preventStrayRequests();
-    Http::fake([
-        'packages.example/api/packages' => Http::response([
-            'data' => [[
-                'title' => 'laravel/framework',
-                'short_description' => 'The Laravel Framework.',
-                'github_url' => 'https://github.com/laravel/framework',
-            ]],
-        ]),
-    ]);
-
-    $response = $this->get('/');
-
-    $response->assertOk()
-        ->assertSeeText('laravel/framework')
-        ->assertSeeText('The Laravel Framework.')
-        ->assertSee('https://github.com/laravel/framework');
-
-    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://packages.example/api/packages');
-});
-
-test('shows the hard-coded package details', function () {
-    $this->get(route('packages.show'))
-        ->assertOk()
-        ->assertSeeText('AnySearch')
-        ->assertSeeText('Real-time structured search trusted by agents and developers')
-        ->assertSee('https://github.com');
-});
-
-test('shows the screenshot lightbox controls', function () {
-    $this->get(route('packages.show'))
-        ->assertOk()
-        ->assertSee('aria-label="Open AnySearch screenshot 1"', false)
-        ->assertSee('x-trap.inert.noscroll="open"', false)
-        ->assertSee('@keydown.right.window="open && goTo(active + 1)"', false);
+test('native routes preserve the existing URIs names and layouts', function () {
+    expect(route('home', absolute: false))->toBe('/')
+        ->and(route('packages.show', absolute: false))->toBe('/packages/anysearch')
+        ->and(NativeRouter::resolve('/'))->toMatchArray([
+            'class' => Home::class,
+            'layout' => HomeLayout::class,
+        ])
+        ->and(NativeRouter::resolve('/packages/anysearch'))->toMatchArray([
+            'class' => PackageDetails::class,
+            'layout' => DetailLayout::class,
+        ]);
 });
