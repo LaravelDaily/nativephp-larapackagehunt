@@ -1,10 +1,30 @@
 <?php
 
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
+
 test('returns a successful response', function () {
+    config(['app.api_url' => 'https://packages.example/api']);
+
+    Http::preventStrayRequests();
+    Http::fake([
+        'packages.example/api/packages' => Http::response([
+            'data' => [[
+                'title' => 'laravel/framework',
+                'short_description' => 'The Laravel Framework.',
+                'github_url' => 'https://github.com/laravel/framework',
+            ]],
+        ]),
+    ]);
+
     $response = $this->get('/');
 
     $response->assertOk()
-        ->assertSee(route('packages.show'));
+        ->assertSeeText('laravel/framework')
+        ->assertSeeText('The Laravel Framework.')
+        ->assertSee('https://github.com/laravel/framework');
+
+    Http::assertSent(fn (Request $request): bool => $request->url() === 'https://packages.example/api/packages');
 });
 
 test('shows the hard-coded package details', function () {

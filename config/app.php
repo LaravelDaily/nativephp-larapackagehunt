@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+     * Laravel API URL
+     */
+    'api_url' => env('API_URL', 'http://localhost:8000/api'),
 ];
