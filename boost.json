@@ -19,6 +19,8 @@
         "pest-testing",
         "tailwindcss-development",
         "blaze-optimize",
-        "nativephp-mobile"
+        "nativephp-mobile",
+        "nativephp-v3-to-v4-upgrade",
+        "nativephp-webview-to-native"
     ]
 }
