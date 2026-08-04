@@ -36,9 +36,4 @@ class Home extends NativeComponent
             $this->errorMessage = 'Packages could not be loaded. Check your connection and try again.';
         }
     }
-
-    public function openPackage(int $packageId): void
-    {
-        $this->navigate($this->route('packages.show', ['package' => $packageId]));
-    }
 }

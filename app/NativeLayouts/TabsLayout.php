@@ -2,6 +2,7 @@
 
 namespace App\NativeLayouts;
 
+use App\NativeComponents\Discover;
 use Native\Mobile\Edge\Layouts\Builders\NavBar;
 use Native\Mobile\Edge\Layouts\Builders\Tab;
 use Native\Mobile\Edge\Layouts\Builders\TabBar;
@@ -12,8 +13,12 @@ class TabsLayout extends NativeLayout
 {
     protected ?string $font = 'semibold';
 
-    public function navBar(NativeComponent $screen): NavBar
+    public function navBar(NativeComponent $screen): ?NavBar
     {
+        if ($screen instanceof Discover) {
+            return null;
+        }
+
         return NavBar::make()
             ->title($screen->navTitle())
             ->displayMode('large');
@@ -24,7 +29,7 @@ class TabsLayout extends NativeLayout
         return TabBar::make()
             ->labelVisibility('labeled')
             ->add(Tab::link('Home', route('home', absolute: false), icon: 'home')->id('home'))
-            ->add(Tab::action('Discover', icon: 'search')->id('discover'));
+            ->add(Tab::link('Discover', route('discover', absolute: false), icon: 'search')->id('discover'));
     }
 
     public function usesNativeChrome(): bool
