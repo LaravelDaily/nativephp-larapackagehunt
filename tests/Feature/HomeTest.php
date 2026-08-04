@@ -1,6 +1,7 @@
 <?php
 
 use App\NativeComponents\Home;
+use App\NativeComponents\PackageRow;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Native\Mobile\Testing\Native;
@@ -16,6 +17,7 @@ test('it renders packages from the API and opens a package', function () {
                 'title' => 'laravel/framework',
                 'short_description' => 'The Laravel Framework.',
                 'github_url' => 'https://github.com/laravel/framework',
+                'stars' => 34_567,
             ]],
         ]),
     ]);
@@ -26,11 +28,28 @@ test('it renders packages from the API and opens a package', function () {
         ->assertElement('image', fn (array $node): bool => ($node['props']['alt'] ?? null) === config('app.name'))
         ->assertSee('laravel/framework')
         ->assertSee('The Laravel Framework.')
+        ->assertSee('34,567')
         ->assertAccessible()
         ->tap('package-row-1')
         ->assertNavigatedTo('/packages/1');
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://packages.example/api/packages');
+});
+
+test('package rows show a centered star count', function () {
+    Native::test(PackageRow::class)
+        ->set('package', [
+            'id' => 1,
+            'title' => 'laravel/framework',
+            'short_description' => 'The Laravel Framework.',
+            'stars' => 34_567,
+        ])
+        ->assertSee('34,567')
+        ->assertElement('column', fn (array $node): bool => ($node['layout']['width'] ?? null) === 48.0
+            && ($node['layout']['align_items'] ?? null) === 1
+            && ($node['layout']['justify_content'] ?? null) === 1)
+        ->assertElement('icon', fn (array $node): bool => ($node['props']['name'] ?? null) === 'star')
+        ->assertAccessible();
 });
 
 test('it shows an empty state', function () {
@@ -57,6 +76,7 @@ test('it recovers from an API failure', function () {
                 'id' => 2,
                 'title' => 'nativephp/mobile',
                 'short_description' => 'Build native apps with Laravel.',
+                'stars' => 812,
             ]],
         ]);
 

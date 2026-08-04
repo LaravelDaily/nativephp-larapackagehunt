@@ -72,6 +72,12 @@
                             <native:text font="bold" class="text-lg font-bold text-theme-on-surface">{{ $package['latest_version'] }}</native:text>
                         </native:column>
                     @endif
+                    <native:column class="gap-1">
+                        <native:text font="medium" class="text-sm font-medium text-theme-on-surface-variant">Stars</native:text>
+                        <native:text font="bold" class="text-lg font-bold text-theme-on-surface">
+                            {{ number_format($package['stars']) }}
+                        </native:text>
+                    </native:column>
                 </native:column>
             </native:column>
         </native:scroll-view>

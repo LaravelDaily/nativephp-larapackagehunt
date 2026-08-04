@@ -10,7 +10,7 @@ use UnexpectedValueException;
 
 class PackageDetails extends NativeComponent
 {
-    /** @var array{id: int, title: string, short_description: string, github_url: string, latest_version: string, latest_release_date: string, images: list<string>}|null */
+    /** @var array{id: int, title: string, short_description: string, github_url: string, stars: int, latest_version: string, latest_release_date: string, images: list<string>}|null */
     public ?array $package = null;
 
     public ?string $errorMessage = null;
@@ -49,6 +49,7 @@ class PackageDetails extends NativeComponent
                 'title' => (string) ($package['title'] ?? 'Package'),
                 'short_description' => (string) ($package['short_description'] ?? ''),
                 'github_url' => (string) ($package['github_url'] ?? ''),
+                'stars' => (int) ($package['stars'] ?? 0),
                 'latest_version' => (string) ($package['latest_version'] ?? ''),
                 'latest_release_date' => (string) ($package['latest_release_date'] ?? ''),
                 'images' => $this->normalizeImages($package['images'] ?? []),

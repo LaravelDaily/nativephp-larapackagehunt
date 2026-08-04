@@ -15,11 +15,17 @@
                 {{ $package['short_description'] ?? 'View package details' }}
             </native:text>
         </native:column>
-        <native:icon
-            :ios="Ios::ChevronRight"
-            :android="Android::ChevronRight"
-            :size="20"
-            class="text-theme-secondary"
-        />
+        <native:column class="w-12 items-center justify-center gap-1">
+            <native:icon
+                name="star"
+                :ios="Ios::StarFill"
+                :android="Android::Star"
+                :size="20"
+                class="text-theme-secondary"
+            />
+            <native:text font="semibold" class="w-full text-center text-sm font-semibold text-theme-on-surface-variant">
+                {{ number_format($package['stars'] ?? 0) }}
+            </native:text>
+        </native:column>
     </native:row>
 </native:pressable>

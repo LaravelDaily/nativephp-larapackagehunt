@@ -17,6 +17,7 @@ test('it renders package details and opens GitHub', function () {
                 'title' => 'laravel-at/laravel-image-sanitize',
                 'short_description' => 'Prevent malicious code execution through uploaded image files.',
                 'github_url' => 'https://github.com/laravel-at/laravel-image-sanitize',
+                'stars' => 12_345,
                 'latest_version' => 'v5.0.0',
                 'latest_release_date' => '2026-06-10',
                 'images' => [],
@@ -30,6 +31,8 @@ test('it renders package details and opens GitHub', function () {
         ->assertSee('Prevent malicious code execution through uploaded image files.')
         ->assertSee('2026-06-10')
         ->assertSee('v5.0.0')
+        ->assertSee('Stars')
+        ->assertSee('12,345')
         ->assertAccessible()
         ->tap('open-github')
         ->assertExitedToWeb('https://github.com/laravel-at/laravel-image-sanitize');
@@ -48,6 +51,7 @@ test('it opens and dismisses a screenshot overlay', function () {
                 'title' => 'laravel-at/laravel-image-sanitize',
                 'short_description' => 'Sanitize image uploads.',
                 'github_url' => 'https://github.com/laravel-at/laravel-image-sanitize',
+                'stars' => 340,
                 'latest_version' => 'v5.0.0',
                 'latest_release_date' => '2026-06-10',
                 'images' => [
@@ -110,6 +114,7 @@ test('it retries after the package API fails', function () {
                 'title' => 'laravel-at/laravel-image-sanitize',
                 'short_description' => 'Sanitize image uploads.',
                 'github_url' => 'https://github.com/laravel-at/laravel-image-sanitize',
+                'stars' => 340,
                 'latest_version' => 'v5.0.0',
                 'latest_release_date' => '2026-06-10',
                 'images' => [],

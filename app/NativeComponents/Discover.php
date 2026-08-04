@@ -13,7 +13,7 @@ class Discover extends NativeComponent
 {
     public string $search = '';
 
-    /** @var list<array{id: int, title: string, short_description?: string, github_url?: string}> */
+    /** @var list<array{id: int, title: string, stars: int, short_description?: string, github_url?: string}> */
     public array $packages = [];
 
     public ?string $errorMessage = null;

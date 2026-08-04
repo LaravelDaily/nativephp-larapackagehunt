@@ -30,6 +30,7 @@ test('it searches packages and opens a result', function () {
                 'id' => 10,
                 'title' => 'nativephp/mobile',
                 'short_description' => 'Build native apps with Laravel.',
+                'stars' => 1_234,
             ]],
         ]),
     ]);
@@ -39,6 +40,7 @@ test('it searches packages and opens a result', function () {
         ->assertSet('search', 'nativephp')
         ->assertSee('nativephp/mobile')
         ->assertSee('Build native apps with Laravel.')
+        ->assertSee('1,234')
         ->assertAccessible()
         ->tap('package-row-10')
         ->assertNavigatedTo('/packages/10');
@@ -71,6 +73,7 @@ test('it retries after the search API fails', function () {
                 'id' => 11,
                 'title' => 'laravel/framework',
                 'short_description' => 'The Laravel Framework.',
+                'stars' => 34_567,
             ]],
         ]);
 
