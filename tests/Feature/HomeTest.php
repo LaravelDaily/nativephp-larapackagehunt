@@ -22,6 +22,8 @@ test('it renders packages from the API and opens a package', function () {
     Native::visit('/')
         ->assertScreen(Home::class)
         ->assertNavTitle('Latest Packages')
+        ->assertElement('image', fn (array $node): bool => str_ends_with($node['props']['src'] ?? '', '/public/app-logo.png'))
+        ->assertElement('image', fn (array $node): bool => ($node['props']['alt'] ?? null) === config('app.name'))
         ->assertSee('laravel/framework')
         ->assertSee('The Laravel Framework.')
         ->assertAccessible()

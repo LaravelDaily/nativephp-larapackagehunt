@@ -41,9 +41,4 @@ class Home extends NativeComponent
     {
         $this->navigate('/packages/anysearch');
     }
-
-    public function navTitle(): string
-    {
-        return 'Latest Packages';
-    }
 }

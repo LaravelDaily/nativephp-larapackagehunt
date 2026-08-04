@@ -3,14 +3,17 @@
 
 <native:refreshable class="w-full h-full bg-theme-background" @refresh="refresh">
     <native:column class="w-full p-7 gap-5">
-        <native:stack class="w-14 h-14 items-center justify-center rounded-full bg-theme-primary">
-            <native:icon
-                :ios="Ios::ShippingboxFill"
-                :android="Android::Inventory2"
-                :size="28"
-                class="text-theme-on-primary"
+        <native:row class="w-full justify-center">
+            <native:image
+                :src="public_path('app-logo.png')"
+                class="w-12 h-12"
+                alt="{{ config('app.name', 'Laravel Package Hunt') }}"
             />
-        </native:stack>
+        </native:row>
+
+        <native:text font="bold" class="text-3xl font-bold text-theme-on-surface">
+            Latest <native:text class="text-theme-on-surface-variant">Packages</native:text>
+        </native:text>
 
         @if ($errorMessage !== null)
             <native:column class="w-full gap-4 rounded-2xl border border-theme-outline bg-theme-surface p-5">
