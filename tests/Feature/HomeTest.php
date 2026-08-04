@@ -12,6 +12,7 @@ test('it renders packages from the API and opens a package', function () {
     Http::fake([
         'packages.example/api/packages' => Http::response([
             'data' => [[
+                'id' => 1,
                 'title' => 'laravel/framework',
                 'short_description' => 'The Laravel Framework.',
                 'github_url' => 'https://github.com/laravel/framework',
@@ -28,7 +29,7 @@ test('it renders packages from the API and opens a package', function () {
         ->assertSee('The Laravel Framework.')
         ->assertAccessible()
         ->tap('package-row-1')
-        ->assertNavigatedTo('/packages/anysearch');
+        ->assertNavigatedTo('/packages/1');
 
     Http::assertSent(fn (Request $request): bool => $request->url() === 'https://packages.example/api/packages');
 });
@@ -54,6 +55,7 @@ test('it recovers from an API failure', function () {
         ->pushStatus(503)
         ->push([
             'data' => [[
+                'id' => 2,
                 'title' => 'nativephp/mobile',
                 'short_description' => 'Build native apps with Laravel.',
             ]],

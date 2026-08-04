@@ -10,6 +10,6 @@ Route::native('/', Home::class)
     ->layout(TabsLayout::class)
     ->name('home');
 
-Route::native('/packages/anysearch', PackageDetails::class)
+Route::native('/packages/{package}', PackageDetails::class)
     ->layout(StackLayout::class)
     ->name('packages.show');

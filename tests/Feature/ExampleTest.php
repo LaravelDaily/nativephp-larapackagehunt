@@ -10,12 +10,12 @@ use Native\Mobile\Testing\Native;
 
 test('native routes preserve the existing URIs names and layouts', function () {
     expect(route('home', absolute: false))->toBe('/')
-        ->and(route('packages.show', absolute: false))->toBe('/packages/anysearch')
+        ->and(route('packages.show', ['package' => 1], absolute: false))->toBe('/packages/1')
         ->and(NativeRouter::resolve('/'))->toMatchArray([
             'class' => Home::class,
             'layout' => TabsLayout::class,
         ])
-        ->and(NativeRouter::resolve('/packages/anysearch'))->toMatchArray([
+        ->and(NativeRouter::resolve('/packages/1'))->toMatchArray([
             'class' => PackageDetails::class,
             'layout' => StackLayout::class,
         ]);

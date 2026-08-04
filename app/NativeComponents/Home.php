@@ -9,7 +9,7 @@ use Throwable;
 
 class Home extends NativeComponent
 {
-    /** @var list<array{title: string, short_description?: string, github_url?: string}> */
+    /** @var list<array{id: int, title: string, short_description?: string, github_url?: string}> */
     public array $packages = [];
 
     public ?string $errorMessage = null;
@@ -37,8 +37,8 @@ class Home extends NativeComponent
         }
     }
 
-    public function openPackage(): void
+    public function openPackage(int $packageId): void
     {
-        $this->navigate('/packages/anysearch');
+        $this->navigate($this->route('packages.show', ['package' => $packageId]));
     }
 }

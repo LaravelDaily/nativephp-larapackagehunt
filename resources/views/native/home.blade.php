@@ -37,10 +37,10 @@
         @else
             @foreach ($packages as $package)
                 <native:pressable
-                    ref="package-row-{{ $loop->iteration }}"
-                    native:key="package-{{ $package['title'] }}"
+                    ref="package-row-{{ $package['id'] }}"
+                    native:key="package-{{ $package['id'] }}"
                     class="w-full rounded-2xl border border-theme-outline-variant bg-theme-surface p-5"
-                    @tap="openPackage"
+                    @tap="openPackage({{ $package['id'] }})"
                 >
                     <native:row class="w-full items-center gap-4">
                         <native:column class="flex-1 gap-1">
