@@ -6,7 +6,7 @@ use Native\Mobile\Edge\Layouts\Builders\NavBar;
 use Native\Mobile\Edge\Layouts\NativeLayout;
 use Native\Mobile\Edge\NativeComponent;
 
-class DetailLayout extends NativeLayout
+class StackLayout extends NativeLayout
 {
     protected ?string $font = 'semibold';
 
