@@ -83,6 +83,11 @@ return [
             // Tertiary accent — for highlights, badges, emphasis not covered by primary.
             'accent' => '#3B82F6',
             'on-accent' => '#FFFFFF',
+
+            // Full-screen media gallery.
+            'gallery-background' => '#000000',
+            'on-gallery' => '#FFFFFF',
+            'gallery-indicator-inactive' => '#CBD5E1',
         ],
 
         'dark' => [
@@ -113,6 +118,10 @@ return [
 
             'accent' => '#93C5FD',
             'on-accent' => '#172554',
+
+            'gallery-background' => '#000000',
+            'on-gallery' => '#FFFFFF',
+            'gallery-indicator-inactive' => '#CBD5E1',
         ],
 
         // Corner radii (points / dp).

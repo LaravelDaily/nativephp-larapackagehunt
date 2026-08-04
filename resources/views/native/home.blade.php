@@ -25,7 +25,7 @@
                 </native:text>
                 <native:button ref="retry-packages" label="Try again" font="semibold" @tap="refresh" />
             </native:column>
-        @elseif ($packages === [])
+        @elseif (empty($packages))
             <native:column class="w-full gap-2 rounded-2xl bg-theme-surface-variant p-5">
                 <native:text font="semibold" class="text-lg font-semibold text-theme-on-surface">
                     No packages yet

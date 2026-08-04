@@ -80,6 +80,23 @@ class PackageDetails extends NativeComponent
         $this->selectedScreenshot = null;
     }
 
+    public function swipeScreenshot(string $direction): void
+    {
+        $imageCount = count($this->package['images'] ?? []);
+
+        if ($this->selectedScreenshot === null || $imageCount < 2) {
+            return;
+        }
+
+        if ($direction === 'left') {
+            $this->selectedScreenshot = ($this->selectedScreenshot + 1) % $imageCount;
+        }
+
+        if ($direction === 'right') {
+            $this->selectedScreenshot = ($this->selectedScreenshot - 1 + $imageCount) % $imageCount;
+        }
+    }
+
     public function navTitle(): string
     {
         return $this->package['title'] ?? 'Package Details';
